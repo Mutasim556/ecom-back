@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Visitor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Contact;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +32,22 @@ class visitorController extends Controller
         return[
             'user_info' => $check,
             'message' => 'Here is user ip',
+        ];
+    }
+
+    public function ContactDetails(Request $data){
+        $date = date('Y-m-d');
+        $time = date('h:i:s a');
+        $insert = Contact::create([
+            'contact_name' => $data->name,
+            'contact_email' => $data->email,
+            'contact_message' => $data->message,
+            'contact_date' => $date,
+            'contact_time' => $time,
+        ]);
+
+        return[
+            'message' => 'Successfully send ',
         ];
     }
 }

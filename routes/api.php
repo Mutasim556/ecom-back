@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(visitorController::class)->group(function(){
     Route::get('/get-visitor','GetVisitorDetails');
+    Route::post('/contact','ContactDetails');
 });
