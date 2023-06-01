@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Visitor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\Info;
 use App\Models\Visitor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -49,5 +50,13 @@ class visitorController extends Controller
         return[
             'message' => 'Successfully send ',
         ];
+    }
+
+    public function CompanyInfo(){
+        $info = Info::first();
+        return response()->json([
+            'info' => $info,
+            'message' => 'Successfully',
+        ],200);
     }
 }
