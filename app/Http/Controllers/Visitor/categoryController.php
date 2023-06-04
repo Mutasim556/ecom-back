@@ -28,6 +28,21 @@ class categoryController extends Controller
             array_push($subCategories,$item);
         }
 
-        return $subCategories;
+        $categories = Category::all();
+        $allCategory = [];
+        foreach($categories as $category){
+            $sub_categories = Subcategory::where('category_id',$category->category_id)->first();
+            if($sub_categories){
+                continue;
+            }else{
+                array_push($allCategory,$category);
+            }
+        }
+
+
+        return [
+            'subCategories' => $subCategories,
+            'allCategories' => $allCategory
+        ];
     }
 }
