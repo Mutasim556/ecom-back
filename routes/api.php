@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Visitor\categoryController;
+use App\Http\Controllers\Visitor\productController;
 use App\Http\Controllers\Visitor\visitorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -31,4 +32,11 @@ Route::controller(visitorController::class)->group(function(){
 Route::controller(categoryController::class)->group(function(){
     Route::get('/get-category','Categories');
     Route::get('/get-sub-category','subCategories');
+});
+
+//products
+Route::controller(productController::class)->group(function(){
+    Route::get('/all-products/{remark}','allProducts');
+    Route::get('/all-category-products/{category}','allProductsByCategory');
+    Route::get('/all-sub-category-products/{subcategory}','allProductsBySubCategory');
 });

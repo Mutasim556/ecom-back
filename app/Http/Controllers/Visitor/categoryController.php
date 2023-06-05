@@ -15,33 +15,23 @@ class categoryController extends Controller
     }
 
     public function subCategories(){
-        $sub_categories = Subcategory::all();
-        $subCategories = [];
-        foreach($sub_categories as $scat){
-            $cat = Category::where('category_id',$scat->category_id)->first();
-            $item = [
-                'category_id' => $cat->category_id,
-                'category_name' => $cat->category_name,
-                'category_image' => $cat->category_image,
-                'subcategory' => $scat,
-            ];
-            array_push($subCategories,$item);
-        }
+        
 
         $categories = Category::all();
         $allCategory = [];
         foreach($categories as $category){
-            $sub_categories = Subcategory::where('category_id',$category->category_id)->first();
-            if($sub_categories){
-                continue;
-            }else{
-                array_push($allCategory,$category);
-            }
+            $sub_categories = Subcategory::where('category_id',$category->category_id)->get();
+            $item = [
+                'category_id' => $category->category_id,
+                'category_name' => $category->category_name,
+                'category_image' => $category->category_image,
+                'subcategory' => $sub_categories,
+            ];
+            array_push($allCategory,$item);
         }
 
 
         return [
-            'subCategories' => $subCategories,
             'allCategories' => $allCategory
         ];
     }
