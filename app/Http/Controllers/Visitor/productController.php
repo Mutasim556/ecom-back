@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Visitor;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\Subcategory;
 use Illuminate\Http\Request;
 
 class productController extends Controller
@@ -13,11 +15,21 @@ class productController extends Controller
         return $products;
     }
     public function allProductsByCategory(Request $data){
+        $category = Category::where('category_id',$data->category)->first();
         $products = Product::where('product_category_id',$data->category)->get();
-        return $products;
+        return [
+            'category' => $category,
+            'products' => $products,
+
+        ];
     }
     public function allProductsBySubCategory(Request $data){
+        $subcategory = Subcategory::where('id',$data->subcategory)->first();
         $products = Product::where('product_sub_category_id',$data->subcategory)->get();
-        return $products;
+        return [
+            'subcategory' => $subcategory,
+            'products' => $products,
+
+        ];
     }
 }

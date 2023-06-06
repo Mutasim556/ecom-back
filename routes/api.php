@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Visitor\AuthController;
 use App\Http\Controllers\Visitor\categoryController;
 use App\Http\Controllers\Visitor\productController;
 use App\Http\Controllers\Visitor\visitorController;
@@ -22,6 +23,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
+//auth
+Route::controller(AuthController::class)->group(function(){
+    Route::post('login','Login');
+});
+
+
 
 Route::controller(visitorController::class)->group(function(){
     Route::get('/get-visitor','GetVisitorDetails');
@@ -40,3 +47,4 @@ Route::controller(productController::class)->group(function(){
     Route::get('/all-category-products/{category}','allProductsByCategory');
     Route::get('/all-sub-category-products/{subcategory}','allProductsBySubCategory');
 });
+
