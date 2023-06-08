@@ -42,6 +42,7 @@ class AuthController extends Controller
         ]);
 
         event(new Registered($user));
+        
 
         return $user;
     }   
