@@ -30,6 +30,7 @@ Route::controller(AuthController::class)->group(function(){
     Route::post('/forgot-password','ForgetPassword');
     Route::post('/reset-password','ResetPassword');
     Route::get('/get-user-info','GetUserInfo')->middleware('auth:sanctum');
+    Route::get('/logout','Logout')->middleware('auth:sanctum');
 });
 
 
