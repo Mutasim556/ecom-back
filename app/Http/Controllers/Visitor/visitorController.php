@@ -59,4 +59,8 @@ class visitorController extends Controller
             'message' => 'Successfully',
         ],200);
     }
+
+    public function Review(){
+        
+    }
 }

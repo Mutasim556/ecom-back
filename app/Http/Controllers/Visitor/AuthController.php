@@ -21,16 +21,25 @@ class AuthController extends Controller
 {
     public function Login(Request $data){
 
+        // $check = DB::table('personal_access_tokens')
         $credentials = $data->only('email','password');
         if(!Auth::attempt($credentials)){
             throw new AuthenticationException(message:'Invalid user information');
+        }else{
+            $token = auth()->user()->createToken('access-token')->plainTextToken;
+            $check = DB::table('personal_access_tokens')->where('tokenable_id',auth()->user()->id)->update([
+                'mac' => exec('getmac'), 
+            ]);
+            return[
+                'message' => 'Successfully login',
+                'user' => auth()->user(),
+                'token' => $token,
+                'mac' => exec('getmac'),
+            ];
+            
         }
 
-        return[
-            'message' => 'Successfully login',
-            'user' => auth()->user(),
-            'token' => auth()->user()->createToken('access-token')->plainTextToken,
-        ];
+        
     } // end 
 
 
@@ -57,12 +66,14 @@ class AuthController extends Controller
             DB::table('password_reset_tokens')->where('email', $data->email)->update([
                 'token' =>  Hash::make($token),
                 'created_at' => Carbon::now(),
+                'token_time' => time(),
             ]);
         }else{
             DB::table('password_reset_tokens')->insert([
                 'email' => $data->email,
                 'token' => Hash::make($token),
                 'created_at' => Carbon::now(),
+                'token_time' => time(),
             ]);
         }
         $mail = Mail::to($data->email)->send(new ForgetPasswordMail($token));
@@ -76,6 +87,20 @@ class AuthController extends Controller
                 'message' => 'Something went wrong',
             ],500);
         }
+    }
+
+    public function ForgetPasswordData(Request $data){
+        $fd = DB::table('password_reset_tokens')->where('email',$data->email)->first();
+        if($fd){
+            return[
+                'fd' => $fd->token_time,
+            ];
+        }else{
+            return[
+                'fd' => 1,
+            ];
+        }   
+        
     }
 
     public function ResetPassword(Request $data){
@@ -105,8 +130,8 @@ class AuthController extends Controller
     }
 
     public function GetUserInfo(){
-        $user = auth()->user();
 
+        $user = auth()->user();
         return $user;
     }
 
